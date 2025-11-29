@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/about.dart';
 import 'package:my_app/contact.dart';
+import 'package:my_app/grid_ui/notice_page.dart';
 import 'package:my_app/home.dart';
 import 'package:my_app/school.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -16,9 +17,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
-      darkTheme: ThemeData(brightness: Brightness.dark),
-      home: const MySeetingpage(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.light, // light mode
+      ),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark, // dark mode
+      ),
+      themeMode: ThemeMode.system, // system light/dark অনুযায়ী
+      // যদি সবসময় light দেখাতে চাও:
+      // themeMode: ThemeMode.light,
+      home: MySeetingpage(),
     );
   }
 }
@@ -97,7 +107,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
       endDrawer: MyDrawer(),
-      bottomNavigationBar: MyBottomNav(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.wechat_sharp, color: Colors.green),
@@ -158,7 +167,7 @@ int currentIndex = 0;
 final List<Widget> _pages = [
   MyHomePage(),
   MyAboutPage(),
-  MySchoolPage(),
+  NoticePage(),
   MyContactPage(),
 ];
 
@@ -174,6 +183,7 @@ class _MySeetingpageState extends State<MySeetingpage> {
     return Scaffold(
       body: _pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex, // ← ADD THIS
         onTap: (index) => {
           setState(() {
             currentIndex = index;
@@ -182,13 +192,15 @@ class _MySeetingpageState extends State<MySeetingpage> {
 
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.info), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Notice'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.contact_page),
+            label: 'Contact',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
         ],
         selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.grey, // optional
       ),
     );
   }
